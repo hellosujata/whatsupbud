@@ -2,9 +2,17 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
+<meta
+  name="viewport"
+  content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+/>
 <title>Valentine 💖</title>
 
 <style>
+  * {
+    -webkit-tap-highlight-color: transparent;
+  }
+
   body {
     margin: 0;
     height: 100vh;
@@ -23,36 +31,38 @@
     text-align: center;
     box-shadow: 0 20px 40px rgba(0,0,0,0.2);
     position: relative;
-    width: 320px;
-    height: 240px;
+    width: 90%;
+    max-width: 340px;
+    height: 260px;
   }
 
   h1 {
     color: #e63946;
-    margin-bottom: 40px;
-    font-size: 22px;
+    font-size: 20px;
+    margin-bottom: 50px;
   }
 
   button {
-    padding: 12px 25px;
+    padding: 14px 28px;
     font-size: 16px;
     border: none;
     border-radius: 30px;
     cursor: pointer;
     position: absolute;
+    touch-action: manipulation;
   }
 
   #yesBtn {
     background: #e63946;
     color: white;
-    left: 40px;
+    left: 30px;
     bottom: 25px;
   }
 
   #noBtn {
     background: #adb5bd;
     color: black;
-    right: 40px;
+    right: 30px;
     bottom: 25px;
   }
 
@@ -66,19 +76,6 @@
     font-style: italic;
   }
 
-  .heart {
-    position: fixed;
-    bottom: -10px;
-    font-size: 20px;
-    animation: float 6s linear infinite;
-    opacity: 0.6;
-  }
-
-  @keyframes float {
-    from { transform: translateY(0); opacity: 1; }
-    to { transform: translateY(-100vh); opacity: 0; }
-  }
-
   .success {
     position: fixed;
     inset: 0;
@@ -87,9 +84,11 @@
     justify-content: center;
     align-items: center;
     flex-direction: column;
-    font-size: 26px;
+    font-size: 22px;
     color: #e63946;
     z-index: 10;
+    text-align: center;
+    padding: 20px;
   }
 </style>
 </head>
@@ -97,12 +96,12 @@
 <body>
 
 <div class="card" id="card">
-  <h1 id="question"></h1>
+  <h1>Will you celebrate Valentine's week with me, Sujata? 💕</h1>
   <button id="yesBtn">Yes 💖</button>
   <button id="noBtn">No 😅</button>
 </div>
 
-<div class="footer" id="fromName"></div>
+<div class="footer">— Arjun</div>
 
 <div class="success" id="successScreen">
   💖 Happy Valentine’s Day 💖<br><br>
@@ -114,14 +113,6 @@
 </audio>
 
 <script>
-  // 🔹 Names
-  const herName = "Sujata";
-  const yourName = "Arjun";
-
-  document.getElementById("question").innerText =
-    `Will you be my Valentine, ${herName}? 💕`;
-  document.getElementById("fromName").innerText = `— ${yourName}`;
-
   const noBtn = document.getElementById("noBtn");
   const yesBtn = document.getElementById("yesBtn");
   const card = document.getElementById("card");
@@ -139,10 +130,7 @@
     noBtn.style.top = y + "px";
   }
 
-  // Desktop
-  noBtn.addEventListener("mouseenter", moveNoButton);
-
-  // Mobile (touch)
+  // MOBILE: move on tap, no focus, no zoom
   noBtn.addEventListener("touchstart", (e) => {
     e.preventDefault();
     moveNoButton();
@@ -153,17 +141,6 @@
     music.play().catch(() => {});
     success.style.display = "flex";
   });
-
-  // Floating hearts
-  setInterval(() => {
-    const heart = document.createElement("div");
-    heart.className = "heart";
-    heart.innerText = "❤️";
-    heart.style.left = Math.random() * 100 + "vw";
-    heart.style.animationDuration = (Math.random() * 3 + 4) + "s";
-    document.body.appendChild(heart);
-    setTimeout(() => heart.remove(), 6000);
-  }, 500);
 </script>
 
 </body>
