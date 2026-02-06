@@ -23,11 +23,14 @@
       text-align: center;
       box-shadow: 0 20px 40px rgba(0,0,0,0.2);
       position: relative;
+      width: 320px;
+      height: 240px;
     }
 
     h1 {
       color: #e63946;
       margin-bottom: 30px;
+      font-size: 22px;
     }
 
     button {
@@ -36,18 +39,29 @@
       border: none;
       border-radius: 30px;
       cursor: pointer;
-      margin: 10px;
+      position: absolute;
     }
 
     #yesBtn {
       background: #e63946;
       color: white;
+      left: 40px;
+      bottom: 30px;
+      animation: pulse 1.6s infinite;
     }
 
     #noBtn {
       background: #adb5bd;
       color: black;
-      position: absolute;
+      right: 40px;
+      bottom: 30px;
+      transition: left 0.2s ease, top 0.2s ease;
+    }
+
+    @keyframes pulse {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.05); }
+      100% { transform: scale(1); }
     }
 
     .footer {
@@ -69,17 +83,12 @@
     }
 
     @keyframes float {
-      from {
-        transform: translateY(0);
-        opacity: 1;
-      }
-      to {
-        transform: translateY(-100vh);
-        opacity: 0;
-      }
+      from { transform: translateY(0); opacity: 1; }
+      to { transform: translateY(-100vh); opacity: 0; }
     }
   </style>
 </head>
+
 <body>
 
   <div class="card">
@@ -89,7 +98,7 @@
     <button id="noBtn">No 😅</button>
   </div>
 
-  <div class="footer">— Arjun</div>
+  <div class="footer" id="fromName"></div>
 
   <!-- Background Music -->
   <audio id="bgMusic" loop>
@@ -97,36 +106,40 @@
   </audio>
 
   <script>
-    // 🔹 CHANGE NAMES HERE
+    // 💕 CHANGE NAMES HERE
     const herName = "Sujata";
     const yourName = "Arjun";
 
     document.getElementById("question").innerText =
-      `Will you celebrate Valentine's week with me, ${herName}? 💕`;
+      `Will you be my Valentine, ${herName}? 💘`;
 
-    document.querySelector(".footer").innerText = `— ${yourName}`;
+    document.getElementById("fromName").innerText = `— ${yourName}`;
 
     const noBtn = document.getElementById("noBtn");
     const yesBtn = document.getElementById("yesBtn");
     const music = document.getElementById("bgMusic");
+    const card = document.querySelector(".card");
 
-    // Place NO initially
-    noBtn.style.left = "140px";
-    noBtn.style.top = "130px";
+    let noX = card.offsetWidth - 120;
+    let noY = card.offsetHeight - 80;
+
+    noBtn.style.left = noX + "px";
+    noBtn.style.top = noY + "px";
 
     noBtn.addEventListener("mouseenter", () => {
-      const moveX = Math.random() * 80 - 40; // SMALL movement
-      const moveY = Math.random() * 80 - 40;
+      const moveX = Math.random() * 40 - 20;
+      const moveY = Math.random() * 40 - 20;
 
-      noBtn.style.transform = `translate(${moveX}px, ${moveY}px)`;
+      noX = Math.min(Math.max(20, noX + moveX), card.offsetWidth - 100);
+      noY = Math.min(Math.max(60, noY + moveY), card.offsetHeight - 50);
+
+      noBtn.style.left = noX + "px";
+      noBtn.style.top = noY + "px";
     });
 
-    // Music must start after user interaction
-    document.body.addEventListener("click", () => {
-      music.play().catch(() => {});
-    }, { once: true });
-
     yesBtn.addEventListener("click", () => {
+      music.volume = 0.4;
+      music.play().catch(() => {});
       alert(`Yayyy 💖 ${herName} said YES!`);
     });
 
@@ -140,7 +153,7 @@
       document.body.appendChild(heart);
 
       setTimeout(() => heart.remove(), 6000);
-    }, 400);
+    }, 500);
   </script>
 
 </body>
