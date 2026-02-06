@@ -1,146 +1,154 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta
-  name="viewport"
-  content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
-/>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <title>Valentine 💖</title>
 
 <style>
-  * {
-    -webkit-tap-highlight-color: transparent;
-  }
+    * {
+        box-sizing: border-box;
+        font-family: 'Poppins', sans-serif;
+    }
 
-  body {
-    margin: 0;
-    height: 100vh;
-    font-family: Arial, sans-serif;
-    background: linear-gradient(135deg, #ff9a9e, #fad0c4);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    overflow: hidden;
-  }
+    body {
+        margin: 0;
+        height: 100vh;
+        background: linear-gradient(135deg, #ff758c, #ff7eb3);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        overflow: hidden;
+    }
 
-  .card {
-    background: white;
-    padding: 35px 25px;
-    border-radius: 20px;
-    text-align: center;
-    box-shadow: 0 20px 40px rgba(0,0,0,0.2);
-    position: relative;
-    width: 90%;
-    max-width: 340px;
-    height: 260px;
-  }
+    .card {
+        background: white;
+        width: 90%;
+        max-width: 350px;
+        padding: 25px;
+        border-radius: 20px;
+        text-align: center;
+        box-shadow: 0 15px 30px rgba(0,0,0,0.2);
+        position: relative;
+    }
 
-  h1 {
-    color: #e63946;
-    font-size: 20px;
-    margin-bottom: 50px;
-  }
+    h1 {
+        font-size: 22px;
+        color: #ff3e6c;
+        margin-bottom: 25px;
+    }
 
-  button {
-    padding: 14px 28px;
-    font-size: 16px;
-    border: none;
-    border-radius: 30px;
-    cursor: pointer;
-    position: absolute;
-    touch-action: manipulation;
-  }
+    .buttons {
+        position: relative;
+        height: 120px;
+    }
 
-  #yesBtn {
-    background: #e63946;
-    color: white;
-    left: 30px;
-    bottom: 25px;
-  }
+    button {
+        padding: 12px 24px;
+        border: none;
+        border-radius: 30px;
+        font-size: 16px;
+        cursor: pointer;
+        position: absolute;
+        transition: transform 0.15s linear;
+    }
 
-  #noBtn {
-    background: #adb5bd;
-    color: black;
-    right: 30px;
-    bottom: 25px;
-  }
+    #yesBtn {
+        background: #ff3e6c;
+        color: white;
+        left: 50%;
+        transform: translateX(-50%);
+        bottom: 10px;
+    }
 
-  .footer {
-    position: fixed;
-    bottom: 10px;
-    width: 100%;
-    text-align: center;
-    font-size: 14px;
-    color: #555;
-    font-style: italic;
-  }
+    #noBtn {
+        background: #ddd;
+        color: #333;
+        left: 50%;
+        top: 10px;
+        transform: translateX(-50%);
+        touch-action: none;
+    }
 
-  .success {
-    position: fixed;
-    inset: 0;
-    background: rgba(255,255,255,0.95);
-    display: none;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-    font-size: 22px;
-    color: #e63946;
-    z-index: 10;
-    text-align: center;
-    padding: 20px;
-  }
+    .footer {
+        margin-top: 30px;
+        font-size: 12px;
+        color: #999;
+    }
+
+    .success {
+        display: none;
+        font-size: 24px;
+        color: #ff3e6c;
+        font-weight: bold;
+    }
 </style>
 </head>
 
 <body>
 
 <div class="card" id="card">
-  <h1>Will you celebrate Valentine's week with me, Sujata? 💕</h1>
-  <button id="yesBtn">Yes 💖</button>
-  <button id="noBtn">No 😅</button>
+    <h1 id="question">
+        Will you celebrate Valentine’s Week with me, Sujata?
+    </h1>
+
+    <div class="buttons">
+        <button id="yesBtn">Yes ❤️</button>
+        <button id="noBtn">No 😅</button>
+    </div>
+
+    <div class="success" id="successMsg">
+        Happy Valentine’s Week ❤️
+    </div>
+
+    <div class="footer">
+        – Arjun
+    </div>
 </div>
 
-<div class="footer">— Arjun</div>
-
-<div class="success" id="successScreen">
-  💖 Happy Valentine’s Day 💖<br><br>
-  You just made this day special ✨
-</div>
-
+<!-- Background Music -->
 <audio id="bgMusic" loop>
-  <source src="music.mp3" type="audio/mpeg">
+    <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mpeg">
 </audio>
 
 <script>
-  const noBtn = document.getElementById("noBtn");
-  const yesBtn = document.getElementById("yesBtn");
-  const card = document.getElementById("card");
-  const music = document.getElementById("bgMusic");
-  const success = document.getElementById("successScreen");
+    const noBtn = document.getElementById("noBtn");
+    const yesBtn = document.getElementById("yesBtn");
+    const question = document.getElementById("question");
+    const successMsg = document.getElementById("successMsg");
+    const bgMusic = document.getElementById("bgMusic");
 
-  function moveNoButton() {
-    const maxX = card.clientWidth - noBtn.offsetWidth - 10;
-    const maxY = card.clientHeight - noBtn.offsetHeight - 10;
+    let musicStarted = false;
 
-    const x = Math.random() * maxX;
-    const y = Math.random() * maxY;
+    function moveNoButton() {
+        const moveX = Math.random() * 80 - 40; // small movement
+        const moveY = Math.random() * 60 - 30;
 
-    noBtn.style.left = x + "px";
-    noBtn.style.top = y + "px";
-  }
+        noBtn.style.transform = `translate(${moveX}px, ${moveY}px)`;
+    }
 
-  // MOBILE: move on tap, no focus, no zoom
-  noBtn.addEventListener("touchstart", (e) => {
-    e.preventDefault();
-    moveNoButton();
-  });
+    // MOBILE FRIENDLY EVENTS
+    noBtn.addEventListener("touchstart", (e) => {
+        e.preventDefault();
+        moveNoButton();
+        startMusic();
+    });
 
-  yesBtn.addEventListener("click", () => {
-    music.volume = 0.4;
-    music.play().catch(() => {});
-    success.style.display = "flex";
-  });
+    noBtn.addEventListener("mouseover", moveNoButton); // backup for desktop
+
+    yesBtn.addEventListener("click", () => {
+        startMusic();
+        question.style.display = "none";
+        document.querySelector(".buttons").style.display = "none";
+        successMsg.style.display = "block";
+    });
+
+    function startMusic() {
+        if (!musicStarted) {
+            bgMusic.play().catch(() => {});
+            musicStarted = true;
+        }
+    }
 </script>
 
 </body>
