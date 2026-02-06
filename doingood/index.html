@@ -21,6 +21,27 @@
         overflow: hidden;
     }
 
+    /* 💕 Floating Hearts */
+    .heart {
+        position: absolute;
+        bottom: -20px;
+        color: rgba(255, 255, 255, 0.6);
+        font-size: 18px;
+        animation: floatUp linear infinite;
+        pointer-events: none;
+    }
+
+    @keyframes floatUp {
+        from {
+            transform: translateY(0) scale(1);
+            opacity: 1;
+        }
+        to {
+            transform: translateY(-110vh) scale(1.6);
+            opacity: 0;
+        }
+    }
+
     .card {
         background: white;
         width: 90%;
@@ -30,6 +51,7 @@
         text-align: center;
         box-shadow: 0 15px 30px rgba(0,0,0,0.2);
         position: relative;
+        z-index: 10;
     }
 
     h1 {
@@ -87,6 +109,9 @@
 
 <body>
 
+<!-- Floating hearts container -->
+<div id="hearts"></div>
+
 <div class="card" id="card">
     <h1 id="question">
         Will you celebrate Valentine’s Week with me, Sujata?
@@ -117,24 +142,23 @@
     const question = document.getElementById("question");
     const successMsg = document.getElementById("successMsg");
     const bgMusic = document.getElementById("bgMusic");
+    const heartsContainer = document.getElementById("hearts");
 
     let musicStarted = false;
 
     function moveNoButton() {
-        const moveX = Math.random() * 80 - 40; // small movement
+        const moveX = Math.random() * 80 - 40;
         const moveY = Math.random() * 60 - 30;
-
         noBtn.style.transform = `translate(${moveX}px, ${moveY}px)`;
     }
 
-    // MOBILE FRIENDLY EVENTS
     noBtn.addEventListener("touchstart", (e) => {
         e.preventDefault();
         moveNoButton();
         startMusic();
     });
 
-    noBtn.addEventListener("mouseover", moveNoButton); // backup for desktop
+    noBtn.addEventListener("mouseover", moveNoButton);
 
     yesBtn.addEventListener("click", () => {
         startMusic();
@@ -149,6 +173,23 @@
             musicStarted = true;
         }
     }
+
+    /* 💕 Generate floating hearts */
+    function createHeart() {
+        const heart = document.createElement("div");
+        heart.className = "heart";
+        heart.innerHTML = "❤️";
+        heart.style.left = Math.random() * 100 + "vw";
+        heart.style.animationDuration = (4 + Math.random() * 4) + "s";
+        heart.style.fontSize = (14 + Math.random() * 20) + "px";
+        heartsContainer.appendChild(heart);
+
+        setTimeout(() => {
+            heart.remove();
+        }, 8000);
+    }
+
+    setInterval(createHeart, 500);
 </script>
 
 </body>
