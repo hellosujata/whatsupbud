@@ -48,7 +48,7 @@
       background: #adb5bd;
       color: black;
       position: absolute;
-      transition: left 0.15s ease, top 0.15s ease;
+      transition: left 0.05s linear, top 0.05s linear;
     }
 
     .footer {
@@ -121,7 +121,7 @@
     noBtn.style.top = noY + "px";
 
     noBtn.addEventListener("mouseenter", () => {
-      const moveX = Math.random() * 30 - 15; // small playful move
+      const moveX = Math.random() * 30 - 15;
       const moveY = Math.random() * 30 - 15;
 
       noX = Math.min(Math.max(20, noX + moveX), card.offsetWidth - 90);
@@ -131,7 +131,7 @@
       noBtn.style.top = noY + "px";
     });
 
-    // Music starts on YES click (browser safe)
+    // Music starts on YES click
     yesBtn.addEventListener("click", () => {
       music.volume = 0.4;
       music.play().catch(() => {});
